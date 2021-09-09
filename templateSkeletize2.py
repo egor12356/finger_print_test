@@ -16,24 +16,26 @@ def tmpDelete(img):
         
 def delete(img,w,h):
     """удаление пикселя по основному набору, возврат кол-ва удаленных"""
-    count=0
-    for i in range(1,h-1):
-        for j in range(1,w-1):
-            if img[j][i]==0:
-                if deletable(img,j,i):
-                    img[j][i]=1
-                    count+=1
+    count = 0
+    for i in range(1, h-1):
+        for j in range(1, w-1):
+            if img[j][i] == 0:
+                if deletable(img, j, i):
+                    img[j][i] = 1
+                    count += 1
     return count
 
-def delete2(img,w,h):
-    for i in range(1,h-1):
-        for j in range(1,w-1):
-            if img[j][i]==0:
-                if deletable2(img,j,i):
-                    img[j][i]=1
+def delete2(img, w, h):
+    """получение 3*3, передача на проверку для шумов"""
+    for i in range(1, h-1):
+        for j in range(1, w-1):
+            if img[j][i] == 0:
+                if deletable2(img, j, i):
+                    img[j][i] = 1
 
 
 def fringe(a):
+    """определение принадлежности 3*3 к шумам"""
     t=[[1,1,1,1,0,1,1,1,1],
        
        [1,1,1,1,0,1,1,0,0],
@@ -51,10 +53,11 @@ def fringe(a):
        [0,0,0,1,0,1,1,1,1],
        [1,1,0,1,0,0,1,1,0]]
     for i in t:
-        if a==i:
+        if a == i:
             return True
         
 def check(a):
+    """определение принадлежности 3*3 к основным шаблонам"""
     t123457=[1,1,0,0,1,0]
     t013457=[1,1,1,0,0,0]
     t134567=[0,1,0,0,1,1]
@@ -89,17 +92,19 @@ def check(a):
     if t == t1234578:
         return True
 
-def deletable(img,x,y):
+def deletable(img, x, y):
+    """получение 3*3, передача на проверку для осн. шаблонов"""
     a=[]
-    for i in range(y-1,y+2):
-        for j in range(x-1,x+2):
+    for i in range(y-1, y+2):
+        for j in range(x-1, x+2):
             a.append(img[j][i])
     return check(a)
 
-def deletable2(img,x,y):
-    a=[]
-    for i in range(y-1,y+2):
-        for j in range(x-1,x+2):
+def deletable2(img, x, y):
+    """получение 3*3, передача на проверку для шумов"""
+    a = []
+    for i in range(y-1, y+2):
+        for j in range(x-1, x+2):
             a.append(img[j][i])
     return fringe(a)
 

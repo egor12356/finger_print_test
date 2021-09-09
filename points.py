@@ -78,26 +78,29 @@ def matchingPoint(r, v):
         
 
 def checkThisPoint(img, x, y):
-    c=0
-    for i in range(x-1,x+2):
-        for j in range(y-1,y+2):
-            if img[i][j]==0:
-                c+=1
+    """подсчет количества черных в окрестности"""
+    c = 0
+    for i in range(x-1, x+2):
+        for j in range(y-1, y+2):
+            if img[i][j] == 0:
+                c += 1
     return c-1
 
 def findCheckPoint(img):
-    x=len(img)
-    y=len(img[0])
-    branchPoint=[]
-    endPoint=[]
+    """формирование списков точек (массивы координат) ветвления и конечных"""
+    x = len(img)
+    y = len(img[0])
+    branchPoint = []
+    endPoint = []
     for i in range(x):
         for j in range(y):
-            if img[i][j]==0:
-                t=checkThisPoint(img, i, j)
-                if t==1:
-                    endPoint.append((i,j))
-                if t==3:
-                    branchPoint.append((i,j))
+            if img[i][j] == 0:
+                # подсчет количества черных в окрестности
+                t = checkThisPoint(img, i, j)
+                if t == 1:
+                    endPoint.append((i, j))
+                if t == 3:
+                    branchPoint.append((i, j))
     return (branchPoint, endPoint)
  
 def checkFinger(pathImage1_str, pathImage2_str):
@@ -106,15 +109,16 @@ def checkFinger(pathImage1_str, pathImage2_str):
     # Переводим в биты
     image1_byte = binary(image1)
 
-
     # Скелетизация
     # вызов процедуры скелетизации, на входе список списков(после бинаризации)
     sk.tmpDelete(image1_byte)
 
+    # формирование списков точек ветвления и конечных
+    arr_point_image1 = findCheckPoint(image1_byte)
+    arr_point_image1 = delNoisePoint(arr_point_image1)
 
-    rp=findCheckPoint(image1_byte)
-    rp=delNoisePoint(rp)
-
+    # #########################################################
+    # Открываем изображение 2
     verf = Image.open(pathImage2_str)
     ver=binary(verf)
     # вызов процедуры скелетизации, на входе список списков(после бинаризации)
@@ -122,7 +126,7 @@ def checkFinger(pathImage1_str, pathImage2_str):
     vp=findCheckPoint(ver)
     vp=delNoisePoint(vp)
 
-    res=matchingPoint(rp,vp)
+    res=matchingPoint(arr_point_image1, vp)
     r=(res[0]/(res[1]*1.))*100
 
     
