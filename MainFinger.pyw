@@ -13,7 +13,7 @@ def start():
     if F.get()=='P':'''
     print pathImage1.get()
     print type(pathImage1.get())
-    exit()
+    # exit()
     points.checkFinger(pathImage1.get(), pathImage2.get())
 
 def openImage1(event):
@@ -60,8 +60,8 @@ autoGraph = StringVar()
 autoGraph.set('')
 
 # Поля в которых указываются пути к файлам
-inEntry = Entry(root, textvariable=pathImage1)
-outEntry = Entry(root, textvariable=pathImage2)
+inEntry = Entry(root, textvariable=pathImage1, state="readonly")
+outEntry = Entry(root, textvariable=pathImage2, state="readonly")
 
 # Кнопки для открытия файла
 getImage1 = Button(root, text='Изображение 1')
